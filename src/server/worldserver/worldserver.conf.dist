@@ -3466,8 +3466,6 @@ AuctionHouseBot.Buyer.Recheck.Interval = 20
 #
 ###################################################################################################
 
-
-
 ###################################################################################################
 # LOGGING SYSTEM SETTINGS
 #
@@ -3563,7 +3561,7 @@ Logger.server=3,Console Server
 Logger.commands.gm=3,Console GM
 Logger.sql.sql=5,Console DBErrors
 Logger.sql.updates=3,Console Server
-
+Logger.playerbot=1,Console Server
 #Logger.achievement=3,Console Server
 #Logger.addon=3,Console Server
 #Logger.ahbot=3,Console Server
@@ -4179,7 +4177,6 @@ VAS.AutoBalance.25.Name = "22997,21966,21965,21964,21806,21215,21845,19728,12397
 VAS.AutoBalance.10.Name = "15689,15550,16152,17521,17225,16028,29324,31099"
 VAS.AutoBalance.5.Name = "15203,15204,15205,15305,6109,26801,30508,26799,30495,26803,30497,27859,27249"
 VAS.AutoBalance.2.Name = "25549,24558,25574,24559,25556,25557,25578,24561,25555,24555,25541,24553,25550,24554,24552,25564,15931,29373"
-
 
 #
 ###################################################################################################
