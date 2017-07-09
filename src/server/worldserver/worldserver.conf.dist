@@ -3803,6 +3803,17 @@ Guildhouse.SellCost = 500
 
 #
 ###################################################################################################
+
+#     Played Time Reward
+#
+#         Bonus players get for playing.
+#
+#         PlayedTimeReward.Interval (default 0) Disabled
+#                                    Time in milliseconds. (60000 = 1 minute, 36000000 = 1 hour)
+#         PlayedTimeReward.Money    (default 0) None
+#                                    In Copper
+#         PlayedTimeReward.Honor    (default 0) None
+#         PlayedTimeReward.Arena    (default 0) None
 #
 
 PlayedTimeReward.Interval = 0
