@@ -38,6 +38,7 @@
 #include "DatabaseEnv.h"
 #include "DisableMgr.h"
 #include "GameEventMgr.h"
+#include "GameObjectModel.h"
 #include "GridNotifiersImpl.h"
 #include "GroupMgr.h"
 #include "GuildMgr.h"
@@ -163,6 +164,12 @@ World::~World()
     MMAP::MMapFactory::clear();
 
     /// @todo free addSessQueue
+}
+
+World* World::instance()
+{
+    static World instance;
+    return &instance;
 }
 
 /// Find a player in a specified zone
@@ -1589,8 +1596,6 @@ void World::LoadConfigSettings(bool reload)
         sIRC->CWHO      = 3;
     }
 }
-
-extern void LoadGameObjectModelList(std::string const& dataPath);
 
 /// Initialize the World
 void World::SetInitialWorldSettings()
@@ -3664,3 +3669,4 @@ void World::RemoveOldCorpses()
     m_timers[WUPDATE_CORPSES].SetCurrent(m_timers[WUPDATE_CORPSES].GetInterval());
 }
 
+Realm realm;
