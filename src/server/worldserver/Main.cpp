@@ -39,6 +39,7 @@
 #include "InstanceSaveMgr.h"
 #include "ObjectAccessor.h"
 #include "ScriptMgr.h"
+#include "ScriptLoader.h"
 #include "OutdoorPvP/OutdoorPvPMgr.h"
 #include "BattlegroundMgr.h"
 #include "TCSoap.h"
@@ -95,6 +96,8 @@ variables_map GetConsoleArguments(int argc, char** argv, std::string& cfg_file, 
 /// Launch the Trinity server
 extern int main(int argc, char** argv)
 {
+    signal(SIGABRT, &Trinity::AbortHandler);
+
     std::string configFile = _TRINITY_CORE_CONFIG;
     std::string configService;
 
@@ -191,6 +194,7 @@ extern int main(int argc, char** argv)
     LoadRealmInfo();
 
     // Initialize the World
+    sScriptMgr->SetScriptLoader(AddScripts);
     sWorld->SetInitialWorldSettings();
 
     // Launch CliRunnable thread
@@ -253,6 +257,8 @@ extern int main(int argc, char** argv)
 
     // Shutdown starts here
     ShutdownThreadPool(threadPool);
+
+    sLog->SetSynchronous();
 
     sScriptMgr->OnShutdown();
 

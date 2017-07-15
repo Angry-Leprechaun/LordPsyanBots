@@ -52,10 +52,15 @@ file(GLOB_RECURSE sources_Weather Weather/*.cpp Weather/*.h)
 file(GLOB_RECURSE sources_World World/*.cpp World/*.h)
 
 # Create game-libary
+CollectSourceFiles(
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  PRIVATE_SOURCES
+  # Exclude
+  ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders)
 
 if (USE_COREPCH)
-  set(game_STAT_PCH_HDR PrecompiledHeaders/gamePCH.h)
-  set(game_STAT_PCH_SRC PrecompiledHeaders/gamePCH.cpp)
+  set(PRIVATE_PCH_HEADER PrecompiledHeaders/gamePCH.h)
+  set(PRIVATE_PCH_SOURCE PrecompiledHeaders/gamePCH.cpp)
 endif ()
 
 set(game_STAT_SRCS
@@ -207,13 +212,36 @@ include_directories(
 
 GroupSources(${CMAKE_CURRENT_SOURCE_DIR})
 
-add_library(game STATIC
-  ${game_STAT_SRCS}
-  ${game_STAT_PCH_SRC}
+add_library(game
+  ${PRIVATE_SOURCES}
+  ${PRIVATE_PCH_SOURCE}
 )
+
+CollectIncludeDirectories(
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  PUBLIC_INCLUDES
+  # Exclude
+  ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders)
+
+target_include_directories(game
+  PUBLIC
+    ${PUBLIC_INCLUDES}
+  PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR})
+
+target_link_libraries(game
+  PUBLIC
+    shared
+    plugins
+    Detour)
+
+set_target_properties(game
+    PROPERTIES
+      FOLDER
+        "server")
 
 add_dependencies(game plugins revision_data.h)
 # Generate precompiled header
 if (USE_COREPCH)
-  add_cxx_pch(game ${game_STAT_PCH_HDR} ${game_STAT_PCH_SRC})
+  add_cxx_pch(game ${PRIVATE_PCH_HEADER} ${PRIVATE_PCH_SOURCE})
 endif ()

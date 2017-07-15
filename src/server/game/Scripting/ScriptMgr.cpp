@@ -27,6 +27,7 @@
 #include "ScriptSystem.h"
 #include "Transport.h"
 #include "Vehicle.h"
+#include "SmartAI.h"
 #include "SpellInfo.h"
 #include "SpellScript.h"
 #include "GossipDef.h"
@@ -242,7 +243,8 @@ struct TSpellSummary
     uint8 Effects;                                          // set of enum SelectEffect
 } *SpellSummary;
 
-ScriptMgr::ScriptMgr() : _scriptCount(0), _scheduledScripts(0)
+ScriptMgr::ScriptMgr()
+  : _scriptCount(0), _scheduledScripts(0), _script_loader_callback(nullptr)
 {
 }
 
@@ -265,7 +267,13 @@ void ScriptMgr::Initialize()
     TC_LOG_INFO("server.loading", "Loading C++ scripts");
 
     FillSpellSummary();
-    AddScripts();
+
+    AddSC_SmartScripts();
+
+    ASSERT(_script_loader_callback,
+           "Script loader callback wasn't registered!");
+
+    _script_loader_callback();
 
 #ifdef SCRIPTS
     for (std::string const& scriptName : UnusedScriptNames)
@@ -511,17 +519,6 @@ void ScriptMgr::OnPacketSend(WorldSession* session, WorldPacket const& packet)
 
     WorldPacket copy(packet);
     FOREACH_SCRIPT(ServerScript)->OnPacketSend(session, copy);
-}
-
-void ScriptMgr::OnUnknownPacketReceive(WorldSession* session, WorldPacket const& packet)
-{
-    ASSERT(session);
-
-    if (SCR_REG_LST(ServerScript).empty())
-        return;
-
-    WorldPacket copy(packet);
-    FOREACH_SCRIPT(ServerScript)->OnUnknownPacketReceive(session, copy);
 }
 
 void ScriptMgr::OnOpenStateChange(bool open)
