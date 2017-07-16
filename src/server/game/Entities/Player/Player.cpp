@@ -21885,12 +21885,8 @@ bool Player::BuyItemFromVendorSlot(ObjectGuid vendorguid, uint32 vendorslot, uin
     Creature* creature = GetNPCIfCanInteractWith(vendorguid, UNIT_NPC_FLAG_VENDOR);
     if (!creature)
     {
-<<<<<<< HEAD
         TC_LOG_DEBUG("network", "WORLD: BuyItemFromVendor - %s not found or you can't interact with him.", vendorguid.ToString().c_str());
-        SendBuyError(BUY_ERR_DISTANCE_TOO_FAR, NULL, item, 0);
-=======
         SendBuyError(BUY_ERR_CANT_FIND_ITEM, nullptr, item, 0);
->>>>>>> master
         return false;
     }
 
@@ -21902,13 +21898,9 @@ bool Player::BuyItemFromVendorSlot(ObjectGuid vendorguid, uint32 vendorslot, uin
 
     if (!(pProto->AllowableClass & getClassMask()) && pProto->Bonding == BIND_WHEN_PICKED_UP && !IsGameMaster())
     {
-<<<<<<< HEAD
-        SendBuyError(BUY_ERR_CANT_FIND_ITEM, NULL, item, 0);
-=======
         TC_LOG_DEBUG("network", "Player::BuyItemFromVendorSlot: Vendor (%s) not found or player '%s' (%s) can't interact with him.",
             vendorguid.ToString().c_str(), GetName().c_str(), GetGUID().ToString().c_str());
         SendBuyError(BUY_ERR_DISTANCE_TOO_FAR, nullptr, item, 0);
->>>>>>> master
         return false;
     }
 
